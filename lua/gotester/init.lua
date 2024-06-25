@@ -1,15 +1,19 @@
+local M = {}
+
+local group = 'gotester'
+
 local callback = function ()
 	print('TODO: run test here')
 end
 
-local M = {}
-
 M.setup = function(opts)
-	print('gotester setup')
+	vim.api.nvim_create_augroup(group, { clear = true })
+
+	M.enable()
 end
 
 M.toggle = function()
-	if (#vim.api.nvim_get_autocmds({ group = 'gotester' }) == 0) then
+	if (#vim.api.nvim_get_autocmds({ group = group }) == 0) then
 		M.enable()
 	else
 		M.disable()
@@ -18,17 +22,14 @@ end
 
 M.enable = function ()
 	vim.api.nvim_create_autocmd('BufWritePost', {
-		group = vim.api.nvim_create_augroup('gotester', { clear = true }),
+		group = group,
 		callback = callback,
+		pattern = '*.go',
 	})
 end
 
 M.disable = function ()
-	vim.api.nvim_clear_autocmds({ group = 'gotester' })
-end
-
-M.test = function ()
-	print(#vim.api.nvim_get_autocmds({ group = 'gotester' }) == 0)
+	vim.api.nvim_clear_autocmds({ group = group })
 end
 
 return M
