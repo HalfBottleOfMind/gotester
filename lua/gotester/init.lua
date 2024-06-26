@@ -3,7 +3,7 @@ local M = {}
 local group = 'gotester'
 
 local callback = function ()
-	print('TODO: run test here')
+	vim.cmd('GoTest')
 end
 
 M.setup = function(opts)
